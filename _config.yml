@@ -1,0 +1,23 @@
+title: Hyeon Park
+description: GNSS RO Researcher at KAIST
+url: "https://hyeonpark.github.io"
+baseurl: ""
+
+author:
+  name: Hyeon Park
+  email: bellhyeon@kaist.ac.kr
+
+theme: null
+
+plugins:
+  - jekyll-feed
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# Exclude from build
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hyeon Kim · GNSS RO Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #f7f5f0;
+      --bg2:     #efecea;
+      --card:    #ffffff;
+      --border:  #e0dbd4;
+      --border2: #ccc8c1;
+      --ink:     #1c1a18;
+      --mid:     #5a5550;
+      --dim:     #9a948e;
+      --accent:  #1d5c8a;
+      --accent2: #2d7fb5;
+      --accent3: #e8f2fb;
+      --warm:    #b85c2a;
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --mono:    'DM Mono', monospace;
+      --sans:    'Jost', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3.5rem;
+      background: rgba(247,245,240,0.93);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--mono); font-size: 0.72rem; color: var(--mid); letter-spacing: 0.07em; text-decoration: none; }
+    .nav-logo strong { color: var(--accent); font-weight: 400; }
+    .nav-links { display: flex; list-style: none; }
+    .nav-links a {
+      display: block; padding: 0 1rem; height: 52px; line-height: 52px;
+      font-family: var(--mono); font-size: 0.64rem;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none;
+      border-left: 1px solid var(--border);
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); background: var(--accent3); }
+
+    /* HERO */
+    .hero { min-height: 100vh; padding-top: 52px; display: grid; grid-template-columns: 1fr 1fr; }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 3.5rem 6rem 5rem;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.15s;
+      position: relative;
+    }
+    .hero-left::after {
+      content: ''; position: absolute; right: 0; top: 8%; bottom: 8%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border2) 30%, var(--border2) 70%, transparent);
+    }
+    .hero-eyebrow { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.8rem; }
+    .hero-eyebrow-line { width: 2rem; height: 1px; background: var(--accent); }
+    .hero-eyebrow span { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+    h1.hero-name { font-family: var(--serif); font-size: clamp(3rem, 5vw, 5.4rem); font-weight: 300; line-height: 1.07; margin-bottom: 1.8rem; color: var(--ink); }
+    h1.hero-name em { font-style: italic; color: var(--accent); }
+    .hero-sub { font-size: 0.93rem; color: var(--mid); max-width: 40ch; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-meta { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 2.8rem; padding-left: 1rem; border-left: 2px solid var(--border2); }
+    .hero-meta-row { font-family: var(--mono); font-size: 0.66rem; color: var(--dim); letter-spacing: 0.03em; }
+    .hero-meta-row strong { color: var(--mid); font-weight: 400; }
+    .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.58rem 1.3rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+    .btn-outline { background: transparent; color: var(--mid); border: 1px solid var(--border2); }
+    .btn-outline:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* HERO RIGHT */
+    .hero-right {
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 4rem 2.5rem; background: var(--bg2);
+      position: relative; overflow: hidden;
+      opacity: 0; animation: fadeIn 1s ease forwards 0.5s;
+    }
+    .hero-right::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, var(--border2) 1px, transparent 1px);
+      background-size: 26px 26px; opacity: 0.45;
+    }
+    .ro-diagram { position: relative; width: 360px; height: 360px; z-index: 1; }
+    .ro-diagram svg { width: 100%; height: 100%; overflow: visible; }
+    .diagram-caption { margin-top: 1.8rem; z-index: 1; text-align: center; }
+    .diagram-caption p { font-family: var(--mono); font-size: 0.6rem; color: var(--dim); letter-spacing: 0.06em; text-transform: uppercase; }
+    .diagram-caption p span { color: var(--accent); }
+
+    @keyframes drawPath { to { stroke-dashoffset: 0; } }
+    @keyframes popIn { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
+    @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+    .svg-path-ray { stroke-dasharray: 420; stroke-dashoffset: 420; animation: drawPath 1.6s ease forwards 1.0s; }
+    .svg-path-atm { stroke-dasharray: 700; stroke-dashoffset: 700; animation: drawPath 2s ease forwards 0.7s; }
+    .svg-sat1 { opacity:0; animation: popIn 0.4s ease forwards 0.6s, floatY 4s ease-in-out infinite 1.1s; }
+    .svg-sat2 { opacity:0; animation: popIn 0.4s ease forwards 0.9s, floatY 4s ease-in-out infinite 1.7s; }
+    .svg-tang { opacity:0; animation: popIn 0.4s ease forwards 2.4s; }
+    .svg-label { opacity:0; animation: popIn 0.3s ease forwards 2.7s; }
+
+    /* SECTIONS */
+    .section-wrap { padding: 5.5rem 5rem; }
+    .section-wrap.alt { background: var(--bg2); }
+    .section-wrap.white { background: var(--card); }
+    .section-header { margin-bottom: 3rem; }
+    .section-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+    .section-tag::before { content:''; width:1.4rem; height:1px; background:var(--accent); }
+    h2.section-title { font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.15; color: var(--ink); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 5rem; align-items: start; }
+    .about-body p { font-size: 0.93rem; color: var(--mid); margin-bottom: 1.1rem; max-width: 54ch; }
+    .about-body p strong { color: var(--ink); font-weight: 500; }
+    .about-body p em { color: var(--accent); font-style: normal; }
+    .keyword-cloud { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.8rem; }
+    .kw { font-family: var(--mono); font-size: 0.61rem; padding: 0.28rem 0.75rem; border: 1px solid var(--border2); color: var(--dim); background: var(--bg); transition: border-color 0.2s, color 0.2s; letter-spacing: 0.04em; }
+    .kw:hover { border-color: var(--accent2); color: var(--accent); }
+    .info-panel { display: flex; flex-direction: column; border: 1px solid var(--border); }
+    .info-row { display: grid; grid-template-columns: 86px 1fr; border-bottom: 1px solid var(--border); }
+    .info-row:last-child { border-bottom: none; }
+    .info-key { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dim); padding: 0.85rem 0.9rem; background: var(--bg2); border-right: 1px solid var(--border); display: flex; align-items: center; }
+    .info-val { font-size: 0.8rem; color: var(--mid); padding: 0.85rem 0.9rem; display: flex; align-items: center; }
+    .info-val strong { color: var(--ink); font-weight: 500; }
+
+    /* RESEARCH */
+    .research-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 2.5rem; }
+    .res-card { background: var(--card); padding: 2.2rem 1.8rem; position: relative; overflow: hidden; transition: background 0.2s; }
+    .res-card::before { content: ''; position: absolute; top:0; left:0; right:0; height:3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .res-card:hover { background: var(--accent3); }
+    .res-card:hover::before { transform: scaleX(1); }
+    .res-num { font-family: var(--mono); font-size: 0.6rem; color: var(--dim); letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+    .res-title { font-family: var(--serif); font-size: 1.22rem; font-weight: 400; color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3; }
+    .res-desc { font-size: 0.84rem; color: var(--mid); line-height: 1.8; }
+    .res-tags { display: flex; flex-wrap: wrap; gap: 0.32rem; margin-top: 1.3rem; }
+    .res-tag { font-family: var(--mono); font-size: 0.57rem; padding: 0.18rem 0.5rem; background: var(--bg2); color: var(--dim); border: 1px solid var(--border); letter-spacing: 0.04em; }
+
+    /* PUBLICATIONS */
+    .pub-list { display: flex; flex-direction: column; }
+    .pub-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 2.2rem; padding: 1.8rem 0; border-bottom: 1px solid var(--border); align-items: start; opacity:0; transform: translateX(-10px); transition: opacity 0.5s, transform 0.5s; }
+    .pub-item:first-child { border-top: 1px solid var(--border); }
+    .pub-item.visible { opacity:1; transform: translateX(0); }
+    .pub-year { font-family: var(--mono); font-size: 0.67rem; color: var(--dim); padding-top: 0.15rem; }
+    .pub-title { font-family: var(--serif); font-size: 1.08rem; font-weight: 400; color: var(--ink); margin-bottom: 0.25rem; line-height: 1.4; }
+    .pub-authors { font-family: var(--mono); font-size: 0.63rem; color: var(--dim); margin-bottom: 0.2rem; }
+    .pub-venue { font-size: 0.8rem; color: var(--mid); }
+    .pub-venue em { color: var(--accent); font-style: normal; }
+    .pub-badge { font-family: var(--mono); font-size: 0.59rem; padding: 0.22rem 0.6rem; border: 1px solid var(--border2); color: var(--dim); white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase; align-self: start; margin-top: 0.15rem; }
+    .pub-badge.conf { border-color: var(--accent2); color: var(--accent); }
+    .pub-badge.prep { border-color: var(--warm); color: var(--warm); }
+
+    /* CONTACT */
+    .contact-wrap { background: var(--ink); padding: 6.5rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .contact-left .section-tag { color: var(--accent2); }
+    .contact-left .section-tag::before { background: var(--accent2); }
+    .contact-left h2 { font-family: var(--serif); font-size: clamp(2rem,3vw,2.8rem); font-weight: 300; color: #fff; margin-top: 0.5rem; line-height: 1.2; }
+    .contact-left p { font-size: 0.88rem; color: rgba(255,255,255,0.42); max-width: 40ch; line-height: 1.85; margin-top: 1rem; }
+    .contact-right { display: flex; flex-direction: column; }
+    .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-decoration: none; transition: padding-left 0.2s; }
+    .contact-link:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+    .contact-link:hover { padding-left: 0.75rem; }
+    .contact-link-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .contact-link-val { font-size: 0.86rem; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .contact-link:hover .contact-link-val { color: #fff; }
+    .contact-arrow { color: rgba(255,255,255,0.2); transition: color 0.2s; }
+    .contact-link:hover .contact-arrow { color: rgba(255,255,255,0.55); }
+
+    footer { background: #111; padding: 1.4rem 3.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); }
+    footer span { font-family: var(--mono); font-size: 0.61rem; color: rgba(255,255,255,0.2); letter-spacing: 0.05em; }
+
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { to { opacity:1; } }
+    .reveal { opacity:0; transform:translateY(16px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 7rem 1.8rem 3.5rem; }
+      .hero-left::after { display: none; }
+      .hero-right { display: none; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+      .research-grid { grid-template-columns: 1fr; }
+      .section-wrap { padding: 4rem 1.8rem; }
+      .contact-wrap { padding: 4rem 1.8rem; }
+      nav { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo"><strong>H. Kim</strong> &nbsp;·&nbsp; KAIST Aero.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>GNSS Radio Occultation &nbsp;·&nbsp; Atmospheric Remote Sensing</span>
+    </div>
+    <h1 class="hero-name">Listening to<br>the <em>Atmosphere</em><br>through Signals.</h1>
+    <p class="hero-sub">I develop signal processing algorithms to retrieve atmospheric profiles from GNSS radio occultation — pushing bending angle retrieval closer to the Earth's surface.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-row"><strong>Affil. &nbsp;</strong> KAIST, Dept. of Aerospace Engineering</div>
+      <div class="hero-meta-row"><strong>Lab &nbsp;&nbsp;&nbsp;</strong> Navigation &amp; GPS Lab, Prof. Jiyun Lee</div>
+      <div class="hero-meta-row"><strong>Data &nbsp;&nbsp;</strong> COSMIC-2 / FORMOSAT-7</div>
+    </div>
+    <div class="hero-btns">
+      <a href="#research" class="btn btn-primary">View Research &rarr;</a>
+      <a href="#publications" class="btn btn-outline">Publications</a>
+      <a href="#contact" class="btn btn-outline">Contact</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="ro-diagram">
+      <svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 28 328 Q 180 262 332 328" stroke="#ccc8c1" stroke-width="2" fill="none"/>
+        <path class="svg-path-atm" d="M 8 292 Q 180 220 352 292" stroke="#ccc8c1" stroke-width="1" stroke-dasharray="6 9" fill="none" opacity="0.6"/>
+        <path d="M 0 255 Q 180 178 360 255" stroke="#ccc8c1" stroke-width="1" stroke-dasharray="5 11" fill="none" opacity="0.35"/>
+        <path d="M 0 218 Q 180 136 360 218" stroke="#ccc8c1" stroke-width="1" stroke-dasharray="4 13" fill="none" opacity="0.18"/>
+        <g class="svg-sat1">
+          <rect x="298" y="50" width="22" height="9" rx="1.5" fill="#1d5c8a"/>
+          <rect x="282" y="53.5" width="14" height="2" fill="#2d7fb5" opacity="0.8"/>
+          <rect x="322" y="53.5" width="14" height="2" fill="#2d7fb5" opacity="0.8"/>
+          <circle cx="309" cy="54.5" r="3" fill="#e8f2fb"/>
+        </g>
+        <text x="330" y="48" font-family="'DM Mono',monospace" font-size="8.5" fill="#9a948e">GNSS</text>
+        <text x="330" y="60" font-family="'DM Mono',monospace" font-size="7.5" fill="#9a948e">GPS/GLONASS</text>
+        <g class="svg-sat2">
+          <rect x="36" y="86" width="22" height="9" rx="1.5" fill="#2d7fb5"/>
+          <rect x="20" y="89.5" width="14" height="2" fill="#1d5c8a" opacity="0.8"/>
+          <rect x="60" y="89.5" width="14" height="2" fill="#1d5c8a" opacity="0.8"/>
+          <circle cx="47" cy="90.5" r="3" fill="#e8f2fb"/>
+        </g>
+        <text x="14" y="80" font-family="'DM Mono',monospace" font-size="8.5" fill="#9a948e">LEO</text>
+        <text x="10" y="92" font-family="'DM Mono',monospace" font-size="7.5" fill="#9a948e">COSMIC-2</text>
+        <path class="svg-path-ray" d="M 309 55 Q 184 260 47 91" stroke="#1d5c8a" stroke-width="1.8" fill="none" opacity="0.78"/>
+        <g class="svg-tang">
+          <circle cx="180" cy="255" r="6" fill="#1d5c8a" opacity="0.12"/>
+          <circle cx="180" cy="255" r="3.2" fill="#1d5c8a"/>
+          <line x1="180" y1="255" x2="180" y2="218" stroke="#1d5c8a" stroke-width="1" stroke-dasharray="3 4" opacity="0.45"/>
+        </g>
+        <g class="svg-label">
+          <text x="196" y="244" font-family="'DM Mono',monospace" font-size="8.5" fill="#1d5c8a" letter-spacing="0.04em">&#945; &#8212; bending angle</text>
+          <text x="196" y="258" font-family="'DM Mono',monospace" font-size="7.5" fill="#9a948e">tangent pt. ~0 km</text>
+        </g>
+        <line x1="0" y1="180" x2="360" y2="180" stroke="#e0dbd4" stroke-width="0.5" opacity="0.5"/>
+        <line x1="180" y1="0" x2="180" y2="360" stroke="#e0dbd4" stroke-width="0.5" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="diagram-caption">
+      <p>Radio Occultation Geometry</p>
+      <p><span>&#945;</span> = bending angle &nbsp;&#183;&nbsp; Abel inversion &#8594; refractivity</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-wrap white" id="about">
+  <div class="about-grid">
+    <div class="about-body">
+      <div class="section-header">
+        <p class="section-tag reveal">About</p>
+        <h2 class="section-title reveal">Where signal processing<br><em style="font-style:italic;color:var(--accent);">meets the atmosphere.</em></h2>
+      </div>
+      <p class="reveal">I'm a master's student at <strong>KAIST Aerospace Engineering</strong>, working in the Navigation &amp; GPS Lab under Prof. Jiyun Lee. My research focuses on GNSS Radio Occultation — a remote sensing technique that uses signals from navigation satellites to probe Earth's atmosphere.</p>
+      <p class="reveal">The lower troposphere is where RO is hardest: multipath propagation, sharp moisture gradients, and super-refraction corrupt the signal. I work on algorithms — <em>wavelet-based phase matching</em> and <em>local spectral width estimation</em> — that push reliable bending angle retrieval closer to the surface.</p>
+      <p class="reveal">When I'm not processing GNSS data, I'm usually hiking — which doubles as fieldwork for mountain-based RO signal collection.</p>
+      <div class="keyword-cloud reveal">
+        <span class="kw">GNSS RO</span><span class="kw">Bending Angle</span><span class="kw">Phase Matching</span>
+        <span class="kw">Wavelet Transform</span><span class="kw">SST</span><span class="kw">Abel Inversion</span>
+        <span class="kw">COSMIC-2</span><span class="kw">Multipath</span><span class="kw">Refractivity</span><span class="kw">MATLAB</span>
+      </div>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="info-panel">
+        <div class="info-row"><span class="info-key">Degree</span><span class="info-val"><strong>M.S.</strong>&nbsp;Aerospace Eng.</span></div>
+        <div class="info-row"><span class="info-key">School</span><span class="info-val"><strong>KAIST</strong>&nbsp;Daejeon, KR</span></div>
+        <div class="info-row"><span class="info-key">Lab</span><span class="info-val">Navigation &amp; GPS Lab</span></div>
+        <div class="info-row"><span class="info-key">Advisor</span><span class="info-val"><strong>Prof. Jiyun Lee</strong></span></div>
+        <div class="info-row"><span class="info-key">Focus</span><span class="info-val">Lower troposphere RO</span></div>
+        <div class="info-row"><span class="info-key">Data</span><span class="info-val">COSMIC-2 / FORMOSAT-7</span></div>
+        <div class="info-row"><span class="info-key">Tools</span><span class="info-val">MATLAB · Python · Git</span></div>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <a href="#" class="btn btn-outline" style="font-size:0.61rem;">Download CV &darr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap alt" id="research">
+  <div class="section-header">
+    <p class="section-tag reveal">Research</p>
+    <h2 class="section-title reveal">Current Projects</h2>
+  </div>
+  <div class="research-grid">
+    <div class="res-card reveal">
+      <p class="res-num">01 — WTPM</p>
+      <h3 class="res-title">Wavelet-Transform Phase Matching</h3>
+      <p class="res-desc">Extending Phase Matching with Synchrosqueezed Wavelet Transform (SST) to sharpen time-frequency resolution and suppress cross-term interference, enabling multi-ray extraction in heavily multipathed occultations.</p>
+      <div class="res-tags"><span class="res-tag">SST</span><span class="res-tag">Phase Matching</span><span class="res-tag">Multi-ridge</span><span class="res-tag">Viterbi</span></div>
+    </div>
+    <div class="res-card reveal reveal-d1">
+      <p class="res-num">02 — LSW</p>
+      <h3 class="res-title">Local Spectral Width Algorithm</h3>
+      <p class="res-desc">STFT-based spectral width estimator for automatically detecting multipath regions in bending angle profiles. Uses CDF-threshold crossing on a 0.5 km altitude grid for robust, reproducible flagging.</p>
+      <div class="res-tags"><span class="res-tag">STFT</span><span class="res-tag">Spectral Width</span><span class="res-tag">CDF Threshold</span><span class="res-tag">Liu 2017</span></div>
+    </div>
+    <div class="res-card reveal reveal-d2">
+      <p class="res-num">03 — KPS</p>
+      <h3 class="res-title">KPS Ionospheric Correction</h3>
+      <p class="res-desc">NeQuick-G Az parameter optimization for the Korean Positioning System with daily, hourly, and grid-based strategies. Validated against GPS Klobuchar and Galileo NeQuick-G over the Korean Peninsula.</p>
+      <div class="res-tags"><span class="res-tag">NeQuick-G</span><span class="res-tag">Ionosphere</span><span class="res-tag">KPS</span><span class="res-tag">Az Optimization</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap white" id="publications">
+  <div class="section-header">
+    <p class="section-tag reveal">Publications</p>
+    <h2 class="section-title reveal">Selected Works</h2>
+  </div>
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-year">2025</span>
+      <div>
+        <p class="pub-title">Wavelet-Transform Phase Matching for Improved Bending Angle Retrieval in the Lower Troposphere</p>
+        <p class="pub-authors">H. Kim, J. Lee</p>
+        <p class="pub-venue">Navigation &amp; GPS Lab, KAIST &nbsp;·&nbsp; <em>Manuscript in preparation</em></p>
+      </div>
+      <span class="pub-badge prep">In Prep.</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2024</span>
+      <div>
+        <p class="pub-title">Local Spectral Width-Based Detection of Multipath Regions in COSMIC-2 Bending Angle Profiles</p>
+        <p class="pub-authors">H. Kim, J. Lee</p>
+        <p class="pub-venue"><em>ION GNSS+ 2024</em> &nbsp;·&nbsp; Conference Presentation</p>
+      </div>
+      <span class="pub-badge conf">Conference</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2024</span>
+      <div>
+        <p class="pub-title">Az Parameter Optimization for NeQuick-G Ionospheric Correction in the Korean Positioning System</p>
+        <p class="pub-authors">H. Kim et al.</p>
+        <p class="pub-venue">KAIST Aerospace Engineering &nbsp;·&nbsp; <em>Technical Report</em></p>
+      </div>
+      <span class="pub-badge">Report</span>
+    </div>
+  </div>
+</div>
+
+<div class="contact-wrap" id="contact">
+  <div class="contact-left reveal">
+    <p class="section-tag">Contact</p>
+    <h2>Let's talk<br><em style="font-style:italic;">research.</em></h2>
+    <p>Interested in GNSS RO, atmospheric remote sensing, or signal processing? Open to discussions, collaborations, and academic connections.</p>
+  </div>
+  <div class="contact-right reveal reveal-d1">
+    <a href="mailto:your@kaist.ac.kr" class="contact-link">
+      <div><p class="contact-link-label">Email</p><p class="contact-link-val">your@kaist.ac.kr</p></div>
+      <span class="contact-arrow">&rarr;</span>
+    </a>
+    <a href="#" class="contact-link">
+      <div><p class="contact-link-label">GitHub</p><p class="contact-link-val">github.com/yourhandle</p></div>
+      <span class="contact-arrow">&rarr;</span>
+    </a>
+    <a href="#" class="contact-link">
+      <div><p class="contact-link-label">Google Scholar</p><p class="contact-link-val">Scholar Profile</p></div>
+      <span class="contact-arrow">&rarr;</span>
+    </a>
+    <a href="#" class="contact-link">
+      <div><p class="contact-link-label">Lab</p><p class="contact-link-val">KAIST Navigation &amp; GPS Lab</p></div>
+      <span class="contact-arrow">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <span>&copy; 2026 Hyeon Kim &nbsp;·&nbsp; KAIST Aerospace Engineering</span>
+  <span>Built with Jekyll &amp; GitHub Pages</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal, .pub-item').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
